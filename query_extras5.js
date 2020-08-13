@@ -24,30 +24,28 @@ async function test() {
   console.log(api.genesisHash.toHex());
 
 
-  //
-  // state retrieval
-  //
-
-  // The actual address that we will use
   const ADDR = '5E7uGfVF4yTP9ELjowHWJyR6eevezZrsamef7u6UEC2bHJPU';
 
-  
-  // Retrieve the last timestamp
-  const now = await api.query.timestamp.now();
+  // Retrieve the hash & size of the entry as stored on-chain
+  const [entryHash, entrySize] = await Promise.all([
+    api.query.system.account.hash(ADDR),
+    api.query.system.account.size(ADDR)
+  ]);
 
-  // Retrieve the account balance & nonce via the system module
-  const { nonce, data: balance } = await api.query.system.account(ADDR);
-
-  console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
+  // Output the info
+  console.log(`The current size is ${entrySize} bytes with a hash of ${entryHash}`);
 
 
-  // alternative way to write the above code
-  // Retrieve last block timestamp, account nonce & balances
-  // const [now2, { nonce, data: balances }] = await Promise.all([
-  //   api.query.timestamp.now(),
-  //   api.query.system.account(ADDR)
-  // ]);
-  // console.log(`${now2}: balance of ${balances.free} and a nonce of ${nonce}`);
+  // ------------------------
+
+  // Extract the info
+  const { meta, method, section } = api.query.system.account;
+
+  // Display some info on a specific entry
+  console.log(`${section}.${method}: ${meta.documentation.join(' ')}`);
+  console.log(`query key: ${api.query.system.account.key(ADDR)}`);
+
+
 
   
 }

@@ -32,24 +32,20 @@ async function test() {
   const ADDR = '5E7uGfVF4yTP9ELjowHWJyR6eevezZrsamef7u6UEC2bHJPU';
 
   
-  // Retrieve the last timestamp
-  const now = await api.query.timestamp.now();
+  // Retrieve the current block header
+  const lastHdr = await api.rpc.chain.getHeader();
+  const startHdr = await api.rpc.chain.getBlockHash(lastHdr.number.unwrap().subn(500));
 
-  // Retrieve the account balance & nonce via the system module
-  const { nonce, data: balance } = await api.query.system.account(ADDR);
+  // retrieve the range of changes
+  const changes = await api.query.system.account.range([startHdr], ADDR);
 
-  console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
+  changes.forEach(([hash, value]) => {
+    console.log(hash.toHex(), value.toHuman());
+  });
 
 
-  // alternative way to write the above code
-  // Retrieve last block timestamp, account nonce & balances
-  // const [now2, { nonce, data: balances }] = await Promise.all([
-  //   api.query.timestamp.now(),
-  //   api.query.system.account(ADDR)
-  // ]);
-  // console.log(`${now2}: balance of ${balances.free} and a nonce of ${nonce}`);
 
-  
+
 }
 
 test();

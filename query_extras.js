@@ -32,24 +32,28 @@ async function test() {
   const ADDR = '5E7uGfVF4yTP9ELjowHWJyR6eevezZrsamef7u6UEC2bHJPU';
 
   
-  // Retrieve the last timestamp
-  const now = await api.query.timestamp.now();
+  // Retrieve the current block header
+  const lastHdr = await api.rpc.chain.getHeader();
 
-  // Retrieve the account balance & nonce via the system module
-  const { nonce, data: balance } = await api.query.system.account(ADDR);
+  // Retrieve the balance at both the current and the parent hashes
+  const [{ data: balanceNow }, { data: balancePrev }] = await Promise.all([
+    api.query.system.account.at(lastHdr.hash, ADDR),
+    api.query.system.account.at(lastHdr.parentHash, ADDR)
+  ]);
 
-  console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
+  // Display the difference
+  console.log(`The delta was ${balanceNow.free.sub(balancePrev.free)}`);
+
+  //-----------------------
+
+  // Retrieve the timestamp for the previous block
+  const momentPrev = await api.query.timestamp.now.at(lastHdr.parentHash);
 
 
-  // alternative way to write the above code
-  // Retrieve last block timestamp, account nonce & balances
-  // const [now2, { nonce, data: balances }] = await Promise.all([
-  //   api.query.timestamp.now(),
-  //   api.query.system.account(ADDR)
-  // ]);
-  // console.log(`${now2}: balance of ${balances.free} and a nonce of ${nonce}`);
 
-  
+
+
+
 }
 
 test();

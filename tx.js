@@ -23,33 +23,22 @@ async function test() {
   // Do something
   console.log(api.genesisHash.toHex());
 
-
-  //
-  // state retrieval
-  //
-
   // The actual address that we will use
   const ADDR = '5E7uGfVF4yTP9ELjowHWJyR6eevezZrsamef7u6UEC2bHJPU';
 
   
-  // Retrieve the last timestamp
-  const now = await api.query.timestamp.now();
 
-  // Retrieve the account balance & nonce via the system module
-  const { nonce, data: balance } = await api.query.system.account(ADDR);
+  // simple tx
+  // Sign and send a transfer from Alice to Bob
+  const txHash = await api.tx.balances
+  .transfer(BOB, 12345)
+  .signAndSend(alice);
 
-  console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
+  // Show the hash
+  console.log(`Submitted with hash ${txHash}`);
 
 
-  // alternative way to write the above code
-  // Retrieve last block timestamp, account nonce & balances
-  // const [now2, { nonce, data: balances }] = await Promise.all([
-  //   api.query.timestamp.now(),
-  //   api.query.system.account(ADDR)
-  // ]);
-  // console.log(`${now2}: balance of ${balances.free} and a nonce of ${nonce}`);
 
-  
 }
 
 test();
