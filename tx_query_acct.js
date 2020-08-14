@@ -1,4 +1,8 @@
-// Import
+/**
+ * make a tx query on an account
+ */
+
+ // Import
 import polkadotapi from '@polkadot/api';
 const { ApiPromise, WsProvider } = polkadotapi;
 //let ApiPromise = require('@polkadot/api').ApiPromise;
@@ -21,7 +25,7 @@ async function test() {
   const api = await ApiPromise.create({ provider: wsProvider });
 
   // Do something
-  //console.log(api.genesisHash.toHex());
+  console.log(api.genesisHash.toHex());
 
 
   //
@@ -29,27 +33,27 @@ async function test() {
   //
 
   // The actual address that we will use
-  //const ADDR = '5E7uGfVF4yTP9ELjowHWJyR6eevezZrsamef7u6UEC2bHJPU';
-  const ADDR = '5E4WcEmHkrrSMpg5mzTUgttnB63WGLcDbFTK1Dax2aW5Xg6L';
+  const ADDR = '5Hih7id3SCCt6H7LarJ5KPnaouRNVy5KMrbeUyX6giiv2ZZX';
 
   
-  // Retrieve the current block header
-  const lastHdr = await api.rpc.chain.getHeader();
-  const startHdr = await api.rpc.chain.getBlockHash(lastHdr.number.unwrap().subn(500));
+  // Retrieve the last timestamp
+  const now = await api.query.timestamp.now();
 
-  // retrieve the range of changes
-  const changes = await api.query.system.account.range([startHdr], ADDR);
+  // Retrieve the account balance & nonce via the system module
+  // const acctInfo = await api.query.system.account(ADDR);
+  // console.log(acctInfo);
+  // console.log(acctInfo.data);
 
-  changes.forEach(([hash, value]) => {
-    console.log(hash.toHex(), value.toHuman());
-  });
+  //const { nonce, data: balance } = await api.query.system.account(ADDR);
+  //console.log(`${now}: balance of ${balance.free} and a nonce of ${nonce}`);
 
-
-  const nominators = await api.query.staking.nominators(ADDR);
-  console.log(nominators.toHuman());
-
+  const bonded = await api.query.staking.bonded(ADDR);
+  console.log(bonded);
 
 
+
+
+  
 }
 
 test();
