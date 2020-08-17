@@ -116,8 +116,8 @@ a:hover {
   transform-style: preserve-3d;
   perspective: 1000px;
   margin-top: 90px;
-  margin-left: auto;
-  margin-right: auto;
+  /*margin-left: auto;
+  margin-right: auto;  not needed when unicon.css is included */
 }
 .card-3d-wrapper {
   width: 100%;
