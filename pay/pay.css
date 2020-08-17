@@ -404,3 +404,13 @@ a:hover {
 	width: auto;
 	display: block;
 }
+
+/* ------------------------------------- */
+
+.float-right {
+  float: right!important;
+}
+
+*, ::after, ::before {
+  box-sizing: border-box;
+}
