@@ -414,3 +414,9 @@ a:hover {
 *, ::after, ::before {
   box-sizing: border-box;
 }
+
+img {
+  vertical-align: middle;
+  border-style: none;
+}
+
