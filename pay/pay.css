@@ -407,7 +407,7 @@ a:hover {
 	display: block;
 }
 
-/* ------------------------------------- */
+/* from _float.scss ------------------------------------- */
 
 .float-right {
   float: right!important;
@@ -421,4 +421,10 @@ a:hover {
   float: none!important;
 }
 
-/* ------------------------------------ */
+/* from _spacing.scss ------------------------------------ */
+
+.mb-4, .my-4 {
+  margin-bottom: 1.5rem!important;
+}
+
+/* from _text.scss --------------------------------------- */
