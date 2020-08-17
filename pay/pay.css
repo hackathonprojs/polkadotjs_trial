@@ -407,5 +407,7 @@ a:hover {
 
 /* ------------------------------------- */
 
-
+.float-right {
+  float: right!important;
+}
 
