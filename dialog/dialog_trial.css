@@ -1,9 +1,11 @@
 .pay-dialog-header {
   padding-top: 0px;
   padding-bottom: 0px;
+  background-color: #ffeba7;
 }
 
 .pay-dialog-body {
   padding: 0px;
-  overflow: hidden
+  overflow: hidden;
+  background-color: #ffeba7;
 }
